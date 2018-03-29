@@ -4,8 +4,24 @@ const request = require('supertest');
 const {app} = require('./../server');
 const {User} = require('./../models/user');
 
+const seedUsers = [{
+    name: 'Test User 1',
+    city: 'Bengaluru',
+    country: 'India'
+}, {
+    name: 'Test User 2',
+    city: 'Palo Alto',
+    country: 'USA'
+}, {
+    name: 'Test User 3',
+    city: 'London',
+    country: 'UK'
+}];
+
 beforeEach((done) => {
-    User.remove({}).then(() => done());
+    User.remove({}).then(() => {
+        return User.insertMany(seedUsers);
+    }).then(() => done());    
 });
 
 describe('POST /user', () => {

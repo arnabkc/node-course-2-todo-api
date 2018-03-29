@@ -46,6 +46,14 @@ app.post('/user', (req, res) => {
     });
 });
 
+app.get('/users', (req, res) => {
+    User.find().then((users) => {
+        res.send({users});
+    }, (err) => {
+        res.status(400).send(err);
+    });
+})
+
 app.listen(3000, () => {
     console.log(`Server started. Listening at: ${port}`);
 });
