@@ -15,7 +15,7 @@ const seedUsers = [{
 }, {
     name: 'Test User 3',
     city: 'London',
-    country: 'UK'
+    country: 'United Kingdom'
 }];
 
 beforeEach((done) => {
@@ -46,7 +46,7 @@ describe('POST /user', () => {
                     return done(err);
                 }
 
-                User.find().then((users) => {
+                User.find({name}).then((users) => {
                     expect(users.length).toBe(1);
                     expect(users[0].name).toBe(name);
 
@@ -70,10 +70,22 @@ describe('POST /user', () => {
                 }
 
                 User.find().then((users) => {
-                    expect(users.length).toBe(0);
+                    expect(users.length).toBe(3);
                     done();
                 }).catch((err) => done(err));
             });
 
+    });
+});
+
+describe('GET /users', () => {
+    it('Should get all users', (done) => {
+        request(app)
+            .get('/users')
+            .expect(200)
+            .expect((res) => {
+                expect(res.body.users.length).toBe(3)
+            })
+            .end(done);
     });
 });
